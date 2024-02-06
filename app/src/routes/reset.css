@@ -1,0 +1,152 @@
+@font-face {
+	font-family: 'SymbolFill';
+	font-style: normal;
+	font-weight: 100;
+	src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v154/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzazHD_dY43zj-jCxv3fzvRNU22ZXGJpEpjC_1v-p_4MrImHCIJIZrDCvHeelbd5zrDAt.woff) format('woff');
+  }
+  @font-face {
+	font-family: 'SymbolFill';
+	font-style: normal;
+	font-weight: 400;
+	src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v154/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzazHD_dY43zj-jCxv3fzvRNU22ZXGJpEpjC_1v-p_4MrImHCIJIZrDCvHOelbd5zrDAt.woff) format('woff');
+  }
+  @font-face {
+	font-family: 'SymbolFill';
+	font-style: normal;
+	font-weight: 700;
+	src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v154/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzazHD_dY43zj-jCxv3fzvRNU22ZXGJpEpjC_1v-p_4MrImHCIJIZrDBIG-elbd5zrDAt.woff) format('woff');
+  }
+  @font-face {
+	font-family: 'SymbolHollow';
+	font-style: normal;
+	font-weight: 100;
+	src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v154/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1v-p_4MrImHCIJIZrDCvHeelbd5zrDAt.woff) format('woff');
+  }
+  @font-face {
+	font-family: 'SymbolHollow';
+	font-style: normal;
+	font-weight: 400;
+	src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v154/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1v-p_4MrImHCIJIZrDCvHOelbd5zrDAt.woff) format('woff');
+  }
+  @font-face {
+	font-family: 'SymbolHollow';
+	font-style: normal;
+	font-weight: 700;
+	src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v154/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1v-p_4MrImHCIJIZrDBIG-elbd5zrDAt.woff) format('woff');
+  }
+  
+  i.icon,
+  i.icon-hollow{
+	  font-style:normal;
+  }
+  .icon {
+	  font-family: SymbolFill;
+  }
+  .icon-hollow {
+	  font-family: SymbolHollow;
+  }
+
+:root {
+	--primary1: #364654;
+	--primary2: #406e87;
+	--primary3: #40859c;
+	--primary4: #4fafc9;
+	--primary5: #5ccceb;
+	--primary6: #8ad5ea;
+	--primary7: #bedfde;
+	
+	--secondary1: #0e0f10;
+	--secondary2: #1c1c1e;
+	--secondary3: #27272b;
+	--secondary4: #34343c;
+	--secondary5: #4d4d5c;
+	--secondary6: #5c5c6a;
+	--secondary7: #797986;
+	
+	--neutral1: #0f1214;
+	--neutral2: #353b40; 
+	--neutral3: #636d74;
+	--neutral4: #81888d; 
+	--neutral5: #abb4ba;
+	--neutral6: #dcdee0;
+	--neutral7: #f0f0ee;
+
+	/* Accent */
+
+	--destructive1: #271111;
+	--destructive2: #592121;
+	--destructive3: #872c2c;
+	--destructive4: #da3030;
+	--destructive5: #d65151;
+	--destructive6: #d57c7c;
+	--destructive7: #dca7a7;
+	--warning1: #41361b;
+	--warning2: #9f7d28;
+	--warning3: #dfa920;
+	--warning4: #f4ca64;
+	--warning5: #f0d58e;
+	--warning6: #f0e3c1;
+	--warning7: #f7f0de;
+	--positive1: #213b2c;
+	--positive2: #357951;
+	--positive3: #39a265;
+	--positive4: #38c172;
+	--positive5: #62cb8e;
+	--positive6: #8ed2aa;
+	--positive7: #badec9;
+
+	--sm-border-radius: 2px;
+	--md-border-radius: 3px;
+	--lg-border-radius: 5px;
+
+	--sm-rounded-radius: 4px;
+	--md-rounded-radius: 8px;
+	--lg-rounded-radius: 16px;
+	
+	--font-family: 'helvetica';
+
+	--sm-weight: 300;
+	--md-weight: 500;
+	--lg-weight: 700;
+
+	--fs1: 0.75rem;
+	--fs2: 1.1rem;
+	--fs3: 1.3rem;
+	--fs4: 1.6rem;
+	--fs5: 2rem;
+	--fs6: 2.5rem;
+	--fs7: 3.1rem;
+	--fs8: 3.8rem;
+	--fs9: 4.6rem;
+}
+@media only screen and (max-width:400px) {
+	body {
+		font-size: 0.65rem;
+	}
+	:root {
+		--fs1: 0.65rem;
+		--fs2: 0.8rem;
+		--fs3: 1.2rem;
+		--fs4: 1.7rem;
+		--fs5: 2.3rem;
+		--fs6: 3rem;
+		--fs7: 3.7rem;
+		--fs8: 4.5rem;
+		--fs9: 5.4rem;
+	}
+}
+
+
+
+
+* {
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+}
+body {
+	background: var(--secondary1);
+	color:var(--neutral7);
+	font-weight: 500;
+	font-family:var(--font-family);
+}
