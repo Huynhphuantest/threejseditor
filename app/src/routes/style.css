@@ -1,0 +1,80 @@
+
+body {
+    display:flex;
+    flex-direction: column;
+    gap:0.5rem;
+    background: var(--secondary1);
+    padding:1rem;
+}
+nav, main {
+    width:100%;
+}
+
+
+
+
+
+nav {
+    height:2rem;
+    overflow-y: hidden;
+    overflow-x: auto;
+    display: flex;
+    background: var(--secondary2);
+    padding:0.25rem;
+    gap:0.25rem;
+}
+nav > img {
+    height: 100%;
+    aspect-ratio: 1/1;
+}
+nav > header {
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight:var(--sm-weight);
+    font-size: var(--fs1);
+    color:var(--primary2);
+}
+nav > button:first-of-type {
+    margin-left:auto;
+    color:var(--neutral5)
+}
+
+
+
+
+body > section {
+    display:flex;
+}
+
+
+
+
+
+main {
+    height:100%;
+    overflow:hidden;
+}
+main > article {
+    width:100%;
+    height:100%;
+    background:var(--secondary2);
+    border-radius: var(--sm-border-radius);
+    padding:0.25rem;
+}
+main > article > header {
+    width:fit-content;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    gap:0.25rem;
+}
+main > article > header > h1 {
+    font-size:var(--fs1);
+    font-weight: var(--sm-weight);
+}
+main > article > header > i {
+    font-size:var(--fs2);
+    font-weight: var(--sm-weight);
+}
