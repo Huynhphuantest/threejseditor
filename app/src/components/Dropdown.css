@@ -1,0 +1,11 @@
+
+.dropdown-list {
+    width:fit-content;
+    max-height: 100%;
+    transition: max-height 0.25s;
+    overflow:hidden;
+    margin:0.25rem;
+}
+.dropdown-list.hide {
+    max-height:0;
+}
