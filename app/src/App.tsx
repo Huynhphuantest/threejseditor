@@ -39,6 +39,10 @@ function App() {
   useEffect(() => {
     if(canvasContainerRef.current == null) return;
     const boundingBox = canvasContainerRef.current.getBoundingClientRect();
+
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(boundingBox.width, boundingBox.height);
+
     const aspect = boundingBox.width / boundingBox.height;
     const camera = new THREE.PerspectiveCamera(
       Config.visual.fov,
@@ -46,17 +50,13 @@ function App() {
       Config.visual.near,
       Config.visual.far,
     );
-
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(boundingBox.width, boundingBox.height); 
     
-
     Global.controls = {
       orbit: new OrbitControls(camera, renderer.domElement),
       transform: new TransformControls(camera, renderer.domElement)
     }
     Global.scene.add(Global.controls.transform);
-
+    
     camera.position.set(2,10,10);
     Global.controls.orbit.update();
 
@@ -64,7 +64,8 @@ function App() {
       camera,
       Global.controls.orbit,
       Global.controls.transform,
-      renderer.domElement
+      renderer.domElement,
+      boundingBox
     );
 
     canvasContainerRef.current.appendChild(renderer.domElement);
@@ -102,24 +103,41 @@ function addControl(
   camera:THREE.PerspectiveCamera,
   orbit:OrbitControls,
   transform:TransformControls,
-  dom:HTMLElement
+  dom:HTMLElement,
+  bounding:DOMRect
 ) {
-  const bounding = dom.getBoundingClientRect();
-  dom.addEventListener('pointerdown', (event) => {
+  const last = {x: 0, y:0};
+  let dist = 0;
+  dom.addEventListener('pointerdown', (e) => {
+    last.x = e.clientX;
+    last.y = e.clientY;
+  });
+  dom.addEventListener('pointerup', (e) => {
+    dist = (
+      (last.x - e.clientX) * (last.x - e.clientX) +
+      (last.y - e.clientY) * (last.y - e.clientY)
+    );
+  });
+  dom.addEventListener('click', (event) => {
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera( new THREE.Vector2(
       ( (event.clientX - bounding.left) / bounding.width  ) * 2 - 1,
       -( (event.clientY - bounding.top ) / bounding.height ) * 2 + 1
     ), camera);
-    
-    Global.scene.add(new THREE.ArrowHelper( raycaster.ray.direction, raycaster.ray.origin ));
-    
+
     const intersects = raycaster.intersectObjects( Global.objects);
-    if(intersects.length == 0) return;
+    if(intersects.length == 0) {
+      if(dist != 0) return;
+      transform.detach();
+      return;
+    }
     transform.attach(intersects[0].object);
   });
   transform.addEventListener('mouseDown', () => {
     orbit.enabled = false;
+  });
+  transform.addEventListener('mouseUp', () => {
+    orbit.enabled = true;
   });
 }
 
