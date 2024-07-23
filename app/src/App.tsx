@@ -6,7 +6,7 @@ import { OrbitControls, TransformControls } from 'three/examples/jsm/Addons.js';
 import { Hierachy } from './components/panel/Hierachy';
 
 import { log, Log } from './components/Debug';
-import { useWindowDimensions } from './hooks/windowDimensionHook';
+import { useWindowDimensions } from './hooks/HPATHooks';
 
 export const Config = {
   visual: {
@@ -40,7 +40,7 @@ function App() {
   const scene = new THREE.Scene();
 
   const canvasContainerRef = useRef<HTMLDivElement>(null);
-
+  
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(windowBounding.width, windowBounding.height);
 
@@ -52,13 +52,13 @@ function App() {
     Config.visual.far,
   );
 
-  const [orbitControl, setOrbitControl] = useState<OrbitControls>(
+  const [orbitControl] = useState<OrbitControls>(
     new OrbitControls(camera, renderer.domElement)
   );
   camera.position.set(2,10,10);
   orbitControl.update();
 
-  const [transformControl, setTransformControl] = useState<TransformControls>(
+  const [transformControl] = useState<TransformControls>(
     new TransformControls(camera, renderer.domElement)
   );
   scene.add(transformControl);
@@ -73,17 +73,14 @@ function App() {
   );
 
   const animate = () => {
-    requestAnimationFrame(animate);
-    
+    requestAnimationFrame(animate);   
     renderer.render(scene, camera);
   }
   animate();
 
   useEffect(() => {
     if(canvasContainerRef.current == null) return;
-
     canvasContainerRef.current.appendChild(renderer.domElement);
-
   }, []);
   return (
     <ChakraProvider>
@@ -96,7 +93,7 @@ function App() {
         <GridItem area="view" ref={canvasContainerRef}>
         </GridItem>
         <GridItem area="hierachy">
-          <Hierachy
+        <Hierachy
             scene={scene}
             orbitControl={orbitControl}
             transformControl={transformControl}
