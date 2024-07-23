@@ -1,16 +1,12 @@
 import './App.css';
 import * as THREE from 'three';
 import { ChakraProvider, Grid, GridItem } from '@chakra-ui/react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { OrbitControls, TransformControls } from 'three/examples/jsm/Addons.js';
 import { Hierachy } from './components/panel/Hierachy';
 
 import { log, Log } from './components/Debug';
-
-export type Controls = {
-  orbit: OrbitControls,
-  transform: TransformControls
-}
+import { useWindowDimensions } from './hooks/windowDimensionHook';
 
 export const Config = {
   visual: {
@@ -19,63 +15,74 @@ export const Config = {
     fov:  75
   }
 }
-const Global : {
-  scene: THREE.Scene,
-  objects: THREE.Object3D[],
-  controls: Controls
-} = {
-  scene: new THREE.Scene(),
-  objects: [],
-  // Not initialized yet
-  controls: {
-    orbit: {} as OrbitControls,
-    transform: {} as TransformControls
-  }
+
+type Bounding = {
+  top:number,
+  left:number,
+  width:number,
+  height:number
 }
 
 function App() {
   console.log = log;
+  
+  // Template Area
+  const windowAspect = 5 * (3/2);
+  const windowDimension = useWindowDimensions();
+  const windowBounding:Bounding = {
+    top:0,
+    left: 0,
+    width: windowDimension.width * windowAspect,
+    height: windowDimension.height
+  };
+
+  const objects:THREE.Object3D[] = [];
+  const scene = new THREE.Scene();
+
   const canvasContainerRef = useRef<HTMLDivElement>(null);
+
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(windowBounding.width, windowBounding.height);
+
+  const aspect = windowBounding.width / windowBounding.height;
+  const camera = new THREE.PerspectiveCamera(
+    Config.visual.fov,
+    aspect,
+    Config.visual.near,
+    Config.visual.far,
+  );
+
+  const [orbitControl, setOrbitControl] = useState<OrbitControls>(
+    new OrbitControls(camera, renderer.domElement)
+  );
+  camera.position.set(2,10,10);
+  orbitControl.update();
+
+  const [transformControl, setTransformControl] = useState<TransformControls>(
+    new TransformControls(camera, renderer.domElement)
+  );
+  scene.add(transformControl);
+
+  addControl(
+    objects,
+    camera,
+    orbitControl,
+    transformControl,
+    renderer.domElement,
+    windowBounding
+  );
+
+  const animate = () => {
+    requestAnimationFrame(animate);
+    
+    renderer.render(scene, camera);
+  }
+  animate();
+
   useEffect(() => {
     if(canvasContainerRef.current == null) return;
-    const boundingBox = canvasContainerRef.current.getBoundingClientRect();
-
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(boundingBox.width, boundingBox.height);
-
-    const aspect = boundingBox.width / boundingBox.height;
-    const camera = new THREE.PerspectiveCamera(
-      Config.visual.fov,
-      aspect,
-      Config.visual.near,
-      Config.visual.far,
-    );
-    
-    Global.controls = {
-      orbit: new OrbitControls(camera, renderer.domElement),
-      transform: new TransformControls(camera, renderer.domElement)
-    }
-    Global.scene.add(Global.controls.transform);
-    
-    camera.position.set(2,10,10);
-    Global.controls.orbit.update();
-
-    addControl(
-      camera,
-      Global.controls.orbit,
-      Global.controls.transform,
-      renderer.domElement,
-      boundingBox
-    );
 
     canvasContainerRef.current.appendChild(renderer.domElement);
-
-    const animate = () => {
-      requestAnimationFrame(animate);
-      
-      renderer.render(Global.scene, camera);
-    }
-    animate();
 
   }, []);
   return (
@@ -90,9 +97,10 @@ function App() {
         </GridItem>
         <GridItem area="hierachy">
           <Hierachy
-            scene={Global.scene}
-            controls={Global.controls}
-            objects={Global.objects} />
+            scene={scene}
+            orbitControl={orbitControl}
+            transformControl={transformControl}
+            objects={objects} />
         </GridItem>
       </Grid>
     </ChakraProvider>
@@ -100,11 +108,12 @@ function App() {
 }
 
 function addControl(
+  objects:THREE.Object3D[],
   camera:THREE.PerspectiveCamera,
   orbit:OrbitControls,
   transform:TransformControls,
   dom:HTMLElement,
-  bounding:DOMRect
+  bounding:Bounding
 ) {
   const last = {x: 0, y:0};
   let dist = 0;
@@ -125,7 +134,7 @@ function addControl(
       -( (event.clientY - bounding.top ) / bounding.height ) * 2 + 1
     ), camera);
 
-    const intersects = raycaster.intersectObjects( Global.objects);
+    const intersects = raycaster.intersectObjects( objects);
     if(intersects.length == 0) {
       if(dist != 0) return;
       transform.detach();

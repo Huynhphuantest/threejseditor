@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Flex, Button, Box } from '@chakra-ui/react';
+import { Flex, Button } from '@chakra-ui/react';
 
 import './Dropdown.css';
 const DropdownContext = createContext({

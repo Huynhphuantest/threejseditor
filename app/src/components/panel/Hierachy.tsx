@@ -1,13 +1,14 @@
 import * as THREE from 'three';
-import { Controls } from '../../App';
 import { Dropdown, DropdownList, DropdownTrigger } from '../Dropdown';
 import { Button, Text, Icon, IconProps, Menu, MenuButton, MenuItem, MenuList, Flex, Box } from '@chakra-ui/react';
 
 import { useReducer } from 'react';
+import { OrbitControls, TransformControls } from 'three/examples/jsm/Addons.js';
 
-export function Hierachy({scene, controls, objects} : {
-    scene: THREE.Scene
-    controls: Controls,
+export function Hierachy({scene, orbitControl, transformControl, objects} : {
+    scene: THREE.Scene,
+    orbitControl: OrbitControls,
+    transformControl: TransformControls,
     objects: THREE.Object3D[]
 }) {
     const [, forceUpdate] = useReducer(x => x + 1, 0);
@@ -29,7 +30,7 @@ export function Hierachy({scene, controls, objects} : {
         justifyContent="start"
     >
         <HierachyDropdown scene={scene} createMesh={createMesh}/>
-        <HierachyList objects={objects} controls={controls}/>
+        <HierachyList objects={objects} orbitControl={orbitControl} transformControl={transformControl}/>
     </Flex>
 }
 function HierachyDropdown(
@@ -81,7 +82,8 @@ function HierachyDropdown(
 }
 function HierachyList(props: {
     objects:THREE.Object3D[],
-    controls:Controls
+    orbitControl: OrbitControls,
+    transformControl: TransformControls
 }) {
     const elements = props.objects.map(e => {
         return <Button
@@ -91,7 +93,7 @@ function HierachyList(props: {
             justifyContent={"start"}
             gap={5}
             onClick={() => {
-                console.log(!!props.controls.transform);
+                //console.log(JSON.stringify(props.transformControl));
                 //props.controls.transform.attach(e)
             }}
             leftIcon={<CircleIcon/>}
