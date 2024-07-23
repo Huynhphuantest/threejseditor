@@ -65,6 +65,18 @@ function HierachyDropdown(
                         )}}>
                             Cylinder
                         </MenuItem>
+                        <MenuItem onClick={() => {createMesh(
+                            new THREE.ConeGeometry(1,1,1),
+                            "Cone"
+                        )}}>
+                            Cone
+                        </MenuItem>
+                        <MenuItem onClick={() => {createMesh(
+                            new THREE.CapsuleGeometry(1,1,1),
+                            "Capsule"
+                        )}}>
+                            Capsule
+                        </MenuItem>
                     </MenuList>
                 </Menu>
                 <Menu>
