@@ -60,7 +60,7 @@ function HierachyDropdown(
                             Sphere
                         </MenuItem>
                         <MenuItem onClick={() => {createMesh(
-                            new THREE.CylinderGeometry(0.5,1,1),
+                            new THREE.CylinderGeometry(1,1,1),
                             "Cylinder"
                         )}}>
                             Cylinder
