@@ -20,14 +20,14 @@ export function DropdownTrigger(
     {children}:{children:React.ReactNode}
 ) {
     const {open, setOpen} = useContext(DropdownContext);
-    return <Button className='dropdown-trigger' onClick={() => setOpen(!open)}>
+    return <Button w={10} h={10} className='dropdown-trigger' onClick={() => setOpen(!open)}>
         {children}
     </Button>
 }
 export function DropdownList(
     {children}:{children:React.ReactNode}
 ) {
-    const {open} = useContext(DropdownContext);
+    const { open } = useContext(DropdownContext);
     return <ul className={'dropdown-list '+(open ? 'show' : 'hide')}>
         <Flex
             p={2}
@@ -37,7 +37,13 @@ export function DropdownList(
             borderRadius={2}
             direction="column"
             alignItems="start"
-            gap={1}>
+            gap={1}
+            zIndex={2}
+            position="absolute"
+            width="fit-content"
+            height="fit-content"
+            display="flex"
+            >
             {children}
         </Flex>
     </ul>
