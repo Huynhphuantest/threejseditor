@@ -93,8 +93,7 @@ function HierachyList(props: {
             justifyContent={"start"}
             gap={5}
             onClick={() => {
-                //console.log(JSON.stringify(props.transformControl));
-                //props.controls.transform.attach(e)
+                props.transformControl.attach(e)
             }}
             leftIcon={<CircleIcon/>}
         >

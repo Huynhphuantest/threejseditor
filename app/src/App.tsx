@@ -27,7 +27,7 @@ function App() {
   console.log = log;
   
   // Template Area
-  const windowAspect = 5 * (3/2);
+  const windowAspect = 3/5;
   const windowDimension = useWindowDimensions();
   const windowBounding:Bounding = {
     top:0,

@@ -1,37 +1,4 @@
 let logger:HTMLUListElement;
-import { useEffect } from "react";
-import "./Debug.css";
-export function log(...messages:unknown[]) {
-    if(logger === undefined) return;
-    messages.forEach(e => {
-        if(e === undefined || e === null) return;
-        /**@type {HTMLElement} */
-        let messageDOM;
-        
-        switch (typeof e) {
-            case 'object':
-                if(!Array.isArray(e)) messageDOM = logJSON(e);
-                else messageDOM = logArray(e);
-                break;
-            case 'string':
-                messageDOM = document.createElement("li")
-                messageDOM.appendChild(document.createTextNode(e));
-                break;
-            case 'boolean':
-            case 'number':
-                messageDOM = document.createElement("li")
-                messageDOM.appendChild(document.createTextNode(`${e}`));
-                break;
-        }
-        if(!messageDOM) return;
-        logger.appendChild(messageDOM);
-        logger.scrollTop = logger.scrollHeight;
-
-        if(logger.children.length > 50) {
-            logger.removeChild(logger.children[0]);
-        }
-    });
-}
 
 export let SPACE_SIZE = 3;
 export let LOG_COLOR_PALLET = {
@@ -52,12 +19,59 @@ export let WEIGHTS = {
     THIN: 100
 };
 
-export let NUMBER_MAX_DECIMAL_POINT = 2;
+export let MAX_LOG_SIZE = 75;
+
+export let NUMBER_MAX_DECIMAL_POINT = 1;
+
+import { useEffect } from "react";
+import "./Debug.css";
+
+export function log(...messages:unknown[]) {
+    if(logger === undefined) return;
+    messages.forEach(e => {
+        /**@type {HTMLElement} */
+        let messageDOM;
+
+        switch (typeof e) {
+            case 'string':
+                messageDOM = document.createElement("li")
+                messageDOM.appendChild(document.createTextNode(e));
+                break;
+            case 'boolean':
+                messageDOM = document.createElement("li")
+                messageDOM.appendChild(document.createTextNode(`${e}`));
+                break;
+            case 'number':
+                messageDOM = document.createElement("li")
+                messageDOM.appendChild(document.createTextNode(`${e}`));
+                break;
+            case 'object':
+                if(e === null) {
+                    messageDOM = document.createElement("li");
+                    messageDOM.appendChild(document.createTextNode('null'));
+                    break;
+                }
+                if(!Array.isArray(e)) messageDOM = logJSON(e);
+                else messageDOM = logArray(e);
+                break;
+            case 'undefined':
+                messageDOM = document.createElement("li");
+                messageDOM.appendChild(document.createTextNode('undefined'));
+                break;
+        }
+        if(!messageDOM) return;
+        logger.appendChild(messageDOM);
+        logger.scrollTop = logger.scrollHeight;
+
+        if(logger.children.length > MAX_LOG_SIZE) {
+            logger.removeChild(logger.children[0]);
+        }
+    });
+}
 
 let chToPx = 0;
 
 export function logJSON(obj:Object, translate = 0) {
-    //if(obj === null) throw new TypeError('Type of obj must not be null')
     if(obj === null) return createNode('null');
     const result = document.createElement('li');
     result.style.listStyle = 'none';
@@ -257,7 +271,7 @@ export function Log() {
 
     logger.removeChild(sizeDOM);
     useEffect(() => {
-        const el = document.querySelector('#console-container');
+        const el = document.getElementById('console-container');
         el?.appendChild(logger);
     });
     return <div id="console-container">
